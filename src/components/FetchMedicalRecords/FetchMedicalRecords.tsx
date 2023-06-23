@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './FetchMedicalRecords.css';
 
-const FetchMedicalRecords: React.FC = () => {
+function FetchMedicalRecords (props: { org: string; }) {
+  const orgs: string = props.org;
   const [searchType, setSearchType] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [medicalRecords, setMedicalRecords] = useState<any[]>([]);
@@ -20,15 +21,19 @@ const FetchMedicalRecords: React.FC = () => {
 
     try {
       let response;
-
       if (searchType === 'id') {
-        response = await axios.get(`/api/medicaldata/${searchValue}`);
+        response = await axios.get(`http://localhost:3000/api/medicaldata/${searchValue}`, {headers: {
+          org: orgs.toLocaleLowerCase()
+        }});
       } else if (searchType === 'patientID') {
-        response = await axios.get(`/api/medicaldata/patient/${searchValue}`);
+        response = await axios.get(`http://localhost:3000/api/medicaldata/patient/${searchValue}`, {headers: {
+          org: orgs.toLocaleLowerCase()
+        }});
       }
 
-      if (response && response.status === 200) {
-        setMedicalRecords(response.data);
+      if (response && (response.status === 200 || response.status === 304)) {
+        setMedicalRecords([response.data]);
+        console.log(response.data)
       } else {
         console.error('Failed to fetch medical records:', response?.statusText);
       }
@@ -83,7 +88,7 @@ const FetchMedicalRecords: React.FC = () => {
                   <span className="record-field">Diagnosis:</span> {record.diagnosis}
                 </p>
                 <p>
-                  <span className="record-field">Medications:</span> {record.medications}
+                  <span className="record-field">Medications: </span> {record.medications}
                 </p>
               </li>
             ))}

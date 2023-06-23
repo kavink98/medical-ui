@@ -1,6 +1,6 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 10px;
   padding: 2rem;
   text-align: center;
   display: 'flex';
@@ -21,6 +21,11 @@
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+}
+
+.home-button-container {
+  display: flex;
+  flex: 1;
 }
 
 .logo:hover {

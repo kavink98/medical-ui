@@ -13,6 +13,9 @@ function Home() {
         <Link to="/fetch-medical-record" className="home-button">
           Fetch Medical Record
         </Link>
+        <Link to="/transfer-medical-record" className="home-button">
+          Transfer Medical Record
+        </Link>
       </div>
     </div>
   );

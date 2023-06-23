@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './CreateMedicalRecord.css';
 
-function CreateMedicalRecord() {
+function CreateMedicalRecord(props: { org: string; }) {
+  const org = props.org
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
@@ -16,10 +18,18 @@ function CreateMedicalRecord() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your logic here to submit the form data
     console.log(formData);
+    const response = await axios.post(`http://localhost:3000/api/medicaldata`, {id: formData.id,
+    patientID: formData.patientID,
+    patientName: formData.patientName,
+    diagnosis: formData.diagnosis,
+    medications: formData.medications.split(',')}, {headers: {
+      org: org
+    }});
+    console.log(response);
+    console.log();
     // Reset the form after submission
     setFormData({
       id: '',
